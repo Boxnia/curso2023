@@ -1,0 +1,74 @@
+<odoo>
+    <!--     create a tree view for the helpdesk.ticket model -->
+    <record id="view_helpdesk_ticket_tree" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.tree</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="arch" type="xml">
+            <tree string="Tickets">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="user_id"/>
+                <field name="date" optional="show"/>
+                <field name="date_limit" optional="hide"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+    <!--     create a form view for the helpdesk.ticket model -->   
+    <record id="view_helpdesk_ticket_form" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.form</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="arch" type="xml">
+            <form string="Ticket">
+                <header>
+                    <div class="o_statusbar">
+                        <!-- Aquí puedes añadir un botón para cambiar manualmente el estado -->
+                        <div class="o_state">
+                            <field name="state" widget="statusbar" status_visible="new,assigned,in_process,pending, resolved"   statusbar_click="true"/>
+                            <!-- Para usar esta opción debes crear una función en el archivo .py que cambie el valor del estado -->
+                        </div>
+                    </div>
+                    
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="date"/>
+                            <field name="date_limit"/>
+                        </group>
+                        <group>
+                            <!-- <field name="assigned" string="Asignado"/> -->
+                            <field name="user_id"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <!-- ponerle un name por si se tiene que heredar-->
+                        <page string="Descripción" name="description">
+                            <field name="description" widget="html"/>
+                        </page>
+                        <page string="Acciones a realizar" name="to_do">
+                            <field name="actions_todo" widget="html"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field> 
+    </record>
+    <!--     create an action for the helpdesk.ticket model -->
+    <record id="helpdesk_ticket_action" model="ir.actions.act_window">
+        <field name="name">Helpdesk ticket</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">helpdesk.ticket</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="helpdesk_menu" name="Helpdesk" sequence="10"/>
+    <menuitem id="helpdesk_ticket" name="Tickets" sequence="10" parent="helpdesk_menu"/>
+    <menuitem id="helpdesk_ticket_open" name="MTickets" sequence="10" parent="helpdesk_ticket" action="helpdesk_ticket_action"/>
+    
+</odoo>

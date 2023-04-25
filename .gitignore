@@ -1,0 +1,6 @@
+# Ignorar archivos de pycache
+__pycache__/
+
+# Ignorar carpetas
+*/node_modules/
+*/.venv/

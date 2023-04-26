@@ -1,3 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-helpdesk_lauragomez.acces_helpdesk_ticket,acces_helpdesk_ticket,helpdesk_lauragomez.model_helpdesk_ticket,helpdesk_lauragomez.res_groups_helpdesk_user,1,1,0,0
-helpdesk_lauragomez.acces_helpdesk_ticket_manager,acces_helpdesk_ticket_manager,helpdesk_lauragomez.model_helpdesk_ticket,helpdesk_lauragomez.res_groups_helpdesk_manager,1,1,1,1

@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright <YEAR(S)> <AUTHOR(S)>
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
+
 <odoo>
 
 <record id="ir_module_category_helpdesk" model="ir.module.category">
     <field name="name">Helpdesk</field>
 </record>
 
+<!-- SE CREA EL GRUPO USUARIO DEL HELPDESK -->
 <record id="res_groups_helpdesk_user" model="res.groups">
     <field name="name">User</field>
     <field name="category_id" ref="ir_module_category_helpdesk"/>
 </record>
 
+<!-- SE CREA EL GRUPO USUARIO DEL HELPDESK MANAGER -->
 <record id="res_groups_helpdesk_manager" model="res.groups">
     <field name="name">Manager</field>
     <field name="category_id" ref="ir_module_category_helpdesk"/>
@@ -17,16 +22,21 @@
     <field name="users" eval="[(4, ref('base.user_admin'))]"/>
 </record>
 
+<!-- REGLA PARA QUE EL USUARIO SOLO PUEDA VER LOS SUYOS -->
 <record id="helpdesk_ticket_personal_rule" model="ir.rule">
     <field name="name">Personal Ticket</field>
     <field ref="model_helpdesk_ticket" name="model_id"/>
     <field name="domain_force">[('user_id','=',user.id)]</field>
     <field name="groups" eval="[(4, ref('res_groups_helpdesk_user'))]"/>
 </record>
+
+<!-- REGLA PARA QUE EL MANAGER PUEDA VER TODOS -->
 <record id="helpdesk_ticket_all_rule" model="ir.rule">
     <field name="name">All Ticket</field>
     <field ref="model_helpdesk_ticket" name="model_id"/>
     <field name="domain_force">[(1,'=',1)]</field>
     <field name="groups" eval="[(4, ref('res_groups_helpdesk_manager'))]"/>
 </record>
+
+
 </odoo>

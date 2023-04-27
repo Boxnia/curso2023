@@ -2,71 +2,89 @@
 <odoo>
 
   <!-- vista de tipo tree para el modelo que muestra más información-->
-  <record id="view_helpdesk_ticket_tree" model="ir.ui.view">
-    <field name="name">view.helpdesk_ticket.tree</field>
-    <field name="model">helpdesk.ticket</field>
-    <field name= "arch" type='xml' >
-      <tree string="Tickets">
-        <field name="sequence" widget="handle" />
-        <field name="name"/>
-        <field name="user_id"/>
-        <field name="date" optional="show"/>
-        <field name="date_limit" optional="hide"/>
-        <field name="state"/>
-      </tree>
-    </field>
-  </record>
+  	<record id="view_helpdesk_ticket_tree" model="ir.ui.view">
+		<field name="name">view.helpdesk_ticket.tree</field>
+		<field name="model">helpdesk.ticket</field>
+		<field name= "arch" type='xml' >
+			<tree string="Tickets">
+				<field name="sequence" widget="handle" />
+				<field name="name"/>
+				<field name="user_id"/>
+				<field name="date" optional="show"/>
+				<field name="date_limit" optional="hide"/>
+				<field name="state"/>
+				<button string="Update description" name="update_description" type="object" class="btn-primary" />
+				<button string="Update all description" name="update_all_description" type="object" class="btn-primary" />
+			</tree>
+		</field>
+  	</record>
 
   <!-- vista de tipo form para el modelo helpdesk_ticket en el  header con el status bar-->
-  
-  
-   <record id="view_helpdesk_ticket_form" model="ir.ui.view">
-    <field name="name">view.helpdesk_ticket.form</field>
-    <field name="model">helpdesk.ticket</field>
-    <field name= "arch" type='xml' >
-      <form string="Tickets">
-  
-        <!--crear un header con el status bar-->
-        <header>
-            <field name="state" widget="statusbar" statusbar_visible="new,assigned,in_process,pending,resolved"/>
-        </header>
-        <sheet>
-          <!--TITULO DE LA PAGINA-->
-          <div class="oe_title">
-            <h1>
-              <field name="name"/>
-            </h1>
-          </div>
-        <!--
-          dos columnas:
-        - fecha, fecha límite
-        - asignado, tiempo dedicado
-        -->
-          <group>
-            <group>
-              <field name="date"/>
-              <field name="date_limit"/>
-            </group>
-            <group>
-              <field name="user_id"/>
-            </group>
-          </group>
-          <notebook>
-            <page string="Description" name='description'>
-              <field name="description"/>
-            </page>
-            <page string="To Do" name='to_do'>
-              <field name="actions_todo"/>
-            </page>
-            </notebook>
-        </sheet>
-      </form>
-    </field>
-  </record>
-  
-
-
-  <record id="helpdesk_ticket_action" model="ir.actions.act_window">
+    <record id="view_helpdesk_ticket_form" model="ir.ui.view">
+		<field name="name">view.helpdesk_ticket.form</field>
+		<field name="model">helpdesk.ticket</field>
+		<field name= "arch" type='xml' >
+			<form string="Tickets">
+		
+				<!--crear un header con el status bar-->
+				<header>
+					<field name="state" widget="statusbar" statusbar_visible="new,assigned,in_process,pending,resolved"/>
+				</header>
+				<sheet>
+				<!--TITULO DE LA PAGINA-->
+				<div class="oe_title">
+					<h1>
+					<field name="name"/>
+					</h1>
+				</div>
+				<!--
+				dos columnas:
+				- fecha, fecha límite
+				- asignado, tiempo dedicado
+				-->
+				<group>
+					<group>
+					<field name="date"/>
+					<field name="date_limit"/>
+					</group>
+					<group>
+					<field name="user_id"/>
+						<field name="tag_ids" widget="many2many_tags"/>
+					</group>
+				</group>
+				<notebook>
+					<page string="Description" name='description'>
+<!-- 					<button string="Update description" name="update_description" type="object" class="btn-primary" />
+ -->				<field name="description"/>
+					</page>
+					<page string="To Do" name='to_do'>
+					<field name="actions_todo"/>
+					</page>
+					<page string="Actions" name='actions'>
+					<button string="Set all as done" name="set_action_as_done" type="object" />
+					<field name="action_ids">
+						<tree string="Actions">
+							<field name="name"/>
+							<field name="state"/>
+						</tree>
+						<form>
+							<header>
+								<button string="Set done" name="set_done" type="object" class="btn-primary" />
+								<button string="Set todo" name="set_todo" type="object" class="btn-primary" />
+							</header>
+							<group>
+								<field name="name"/>
+								<field name="state" readonly="1"/>
+							</group>							
+						</form>
+					</field>
+					</page>
+					</notebook>
+				</sheet>
+			</form>
+		</field>
+    </record>
+    <record id="helpdesk_ticket_action" model="ir.actions.act_window">
         <field name="name">HelpDesk</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">helpdesk.ticket</field>

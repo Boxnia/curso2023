@@ -78,7 +78,12 @@ class HelpdeskTicket(models.Model):
         # column2='tag_id',
         string='Tags')
 
-        
+    color = fields.Integer("Color Index", default=0)
+    amount_time = fields.Float(string="Amount of time")
+    person_id = fields.Many2one("res.partner",
+                              domain=[('is_company','=',False)],
+                              string="Person")
+    
     #api multi, se ejecuta sobre un conjunto de registros
     #clase api.one, se ejecuta sobre un registro
     #record -> objeto

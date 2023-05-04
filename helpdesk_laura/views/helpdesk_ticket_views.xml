@@ -165,8 +165,13 @@
 						<field name="amount_time" type="measure" widget="float_time" />
 					</group>
 					<group>
+						<field name="is_assigned"/>
 					    <field name="user_id"/>
+						 <field name="tickets_count"/>
 						<field name="person_id"/>
+						<field name="tag_name"/>
+						<button name="create_tag" string="Crear" type="object" class="btn-primary" />
+						<button name="clear_tag" string="Limpiar" type="object" class="btn-primary" />
 						<field name="tag_ids" widget="many2many_tags"/>
 					</group>
 				</group>

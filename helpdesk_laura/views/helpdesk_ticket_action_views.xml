@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+   <record id="view_helpdesk_ticket_action_tree" model="ir.ui.view">
+		<field name="name">view.helpdesk_ticket_action.tree</field>
+		<field name="model">helpdesk.ticket.action</field>
+		<field name= "arch" type='xml'>
+			<tree string="Tickets Actions">
+				<field name="name"/>
+			</tree>
+		</field>
+    </record>
+    <record id="view_helpdesk_ticket_action_form" model="ir.ui.view">
+		<field name="name">view.helpdesk_ticket_action.form</field>
+		<field name="model">helpdesk.ticket.action</field>
+		<field name= "arch" type='xml' >
+			<form string="Tickets Actions">
+				<sheet>
+					<group>
+						<field name="name"/>
+					</group>
+				</sheet>
+			</form>
+		</field>
+    </record>
+    <record id="helpdesk_ticket_action_action" model="ir.actions.act_window">
+        <field name="name">HelpDesk Tickets Actions</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">helpdesk.ticket.action</field>
+        <field name="view_mode">tree,form</field>
+		<field name="help" type="html">
+			<p class="o_view_nocontent_smiling_face">
+				Create a new ticket action
+			</p>
+		</field>
+    </record>
+    <menuitem id="helpdesk_menu_config" name="Config" parent="helpdesk_menu" sequence="20"/>
+    <menuitem id="helpdesk_ticket_action_open" name="Actions" sequence="10" parent="helpdesk_menu_config" action="helpdesk_ticket_action_action"/>
+</odoo>

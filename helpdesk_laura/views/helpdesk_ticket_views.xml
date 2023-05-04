@@ -185,7 +185,8 @@
 					</page>
 					<page string="Actions" name='actions'>
 					<button string="Set all as done" name="set_action_as_done" type="object" />
-					<field name="action_ids">
+					<field name="action_ids"></field>
+					<!-- <field name="action_ids">
 						<tree string="Actions">
 							<field name="name"/>
 							<field name="state"/>
@@ -200,7 +201,7 @@
 								<field name="state" readonly="1"/>
 							</group>							
 						</form>
-					</field>
+					</field> -->
 					</page>
 					</notebook>
 				</sheet>

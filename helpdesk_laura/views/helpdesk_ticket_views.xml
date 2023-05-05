@@ -168,11 +168,12 @@
 						<field name="is_assigned"/>
 					    <field name="user_id"/>
 						 <field name="tickets_count"/>
-						<field name="person_id"/>
+						<field name="person_id" options="{'no_quick_create':True, 'no_open':True}"/>
 						<field name="tag_name"/>
 						<button name="create_tag" string="Crear" type="object" class="btn-primary" />
 						<button name="clear_tag" string="Limpiar" type="object" class="btn-primary" />
-						<field name="tag_ids" widget="many2many_tags"/>
+<!-- 						 Hacer que el tag_ids no pueda crear nuevos tag_ids
+ -->					<field name="tag_ids" widget="many2many_tags"  options="{'no_open':True}"/>
 					</group>
 				</group>
 				<notebook>
@@ -185,7 +186,8 @@
 					</page>
 					<page string="Actions" name='actions'>
 					<button string="Set all as done" name="set_action_as_done" type="object" />
-					<field name="action_ids"></field>
+					<field name="action_ids" context="{'default_state':'done','tree_view_ref':'helpdesk_laura.view_helpdesk_ticket_action_tree_simple','form_view_ref':'helpdesk_laura.view_helpdesk_ticket_action_form_simple'}" />
+					
 					<!-- <field name="action_ids">
 						<tree string="Actions">
 							<field name="name"/>

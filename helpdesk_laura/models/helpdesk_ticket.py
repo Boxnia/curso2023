@@ -82,9 +82,9 @@ class HelpdeskTicket(models.Model):
     # comparte campos entre records
     tag_ids = fields.Many2many(
         comodel_name="helpdesk.ticket.tag",
-        # relation='helpdesk_ticket_tag_rel',
-        # column1='ticket_id',
-        # column2='tag_id',
+        relation='helpdesk_ticket_tag_rel',
+        column1='ticket_id',
+        column2='tag_id',
         string="Tags",
     )
 

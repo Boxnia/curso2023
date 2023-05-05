@@ -3,36 +3,90 @@
    <record id="view_helpdesk_ticket_action_tree" model="ir.ui.view">
 		<field name="name">view.helpdesk_ticket_action.tree</field>
 		<field name="model">helpdesk.ticket.action</field>
+		<field eval="10" name="priority"/>
 		<field name= "arch" type='xml'>
-			<tree string="Tickets Actions">
+			<tree string="Actions">
 				<field name="name"/>
+				<field name="state"/>
+				<field name="ticket_id"/>
 			</tree>
 		</field>
     </record>
-    <record id="view_helpdesk_ticket_action_form" model="ir.ui.view">
+	<record id="view_helpdesk_ticket_action_form" model="ir.ui.view">
 		<field name="name">view.helpdesk_ticket_action.form</field>
 		<field name="model">helpdesk.ticket.action</field>
+		<field eval="10" name="priority"/>
 		<field name= "arch" type='xml' >
 			<form string="Tickets Actions">
 				<sheet>
 					<group>
-						<field name="name"/>
+						<tree string="Actions">
+							<field name="name"/>
+							<field name="state"/>
+							<field name="ticket_id"/>
+						</tree>
 					</group>
 				</sheet>
 			</form>
 		</field>
     </record>
+	<!-- - En el ticket tenemos un campo action_ids, y no tenemos definida una vista para el modelo al que apunta, crear una vista embevida, y vamos a ocultar el m2o en el formulario que aputna al o2m en el inverse_name. -->
+	<!-- 	las siguientes vistas se crean para embeberlas en la vista heldesk_ticket_view
+	-->	  
+ 	<record id="view_helpdesk_ticket_action_tree_simple" model="ir.ui.view">
+		<field name="name">view.helpdesk_ticket_action.tree.simple</field>
+		<field name="model">helpdesk.ticket.action</field>
+		<field eval="100" name="priority"/>
+		<field name= "arch" type='xml'>
+			<tree string="Actions">
+				<field name="name"/>
+				<field name="state"/>
+			</tree>
+		</field>
+    </record>
+   	<record id="view_helpdesk_ticket_action_form_simple" model="ir.ui.view">
+		<field name="name">view.helpdesk_ticket_action.form.simple</field>
+		<field name="model">helpdesk.ticket.action</field>
+		<field eval="100" name="priority"/>
+		<field name= "arch" type='xml' >
+			<form string="Tickets Actions">
+<!-- 			como es una vista embebida se quita el sheet
+ -->				<!-- <sheet> -->
+					<group>
+						<tree string="Actions">
+							<field name="name"/>
+							<field name="state"/>
+						</tree>
+					</group>
+				<!-- </sheet> -->
+			</form>
+		</field>
+    </record>
+  	<record id="view_helpdesk_ticket_action_search" model="ir.ui.view">
+		<field name="name">view.helpdesk_ticket.action.search</field>
+		<field name="model">helpdesk.ticket.action</field>
+		<field name= "arch" type='xml' >
+			<search string="Actions">
+				<field name="name"/>
+				<field name="state"/>
+				<field name="ticket_id"/>
+				<group expand="0" string="Group By" name="groupby">
+					<filter string="State" name="state_groupby" context="{'group_by':'state'}"/>
+					<filter string="Ticket" name="ticket_id_groupby" context="{'group_by':'ticket_id'}"/>
+				</group>
+			</search>
+		</field>
+  	</record>
     <record id="helpdesk_ticket_action_action" model="ir.actions.act_window">
         <field name="name">HelpDesk Tickets Actions</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">helpdesk.ticket.action</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">tree,form,search</field>
 		<field name="help" type="html">
 			<p class="o_view_nocontent_smiling_face">
 				Create a new ticket action
 			</p>
 		</field>
     </record>
-    <menuitem id="helpdesk_menu_config" name="Config" parent="helpdesk_menu" sequence="20"/>
-    <menuitem id="helpdesk_ticket_action_open" name="Actions" sequence="10" parent="helpdesk_menu_config" action="helpdesk_ticket_action_action"/>
+    <menuitem id="helpdesk_ticket_action_menu" name="Actions" sequence="20" parent="helpdesk_menu" action="helpdesk_ticket_action_action"/>
 </odoo>

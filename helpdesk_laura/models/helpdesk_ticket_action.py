@@ -7,11 +7,12 @@ class HelpdeskTicketAction(models.Model):
   
     #Crear un nuevo modelo acciones, con titulo y estado ( todo o done).
     name = fields.Char(
+        string="Action",
         required=True,
-        string='Title'
     )
     
     state = fields.Selection(
+        string="State",
         selection=[
             ('todo', 'To do'),
             ('done', 'Done')

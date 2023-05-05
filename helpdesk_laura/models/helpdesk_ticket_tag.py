@@ -10,4 +10,12 @@ class HelpdeskTicketTag(models.Model):
         required=True,
         string='Title',
     )
-        
+    
+    tickets_ids = fields.Many2many(
+        "helpdesk.ticket",
+        "helpdesk_ticket_tag_rel",
+        "tag_id",
+        "ticket_id",
+        "Tickets"
+    )
+            

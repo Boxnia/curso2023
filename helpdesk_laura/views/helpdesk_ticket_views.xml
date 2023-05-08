@@ -145,6 +145,8 @@
 				<!--crear un header con el status bar-->
 				<header>
 					<field name="state" widget="statusbar" statusbar_visible="new,assigned,in_process,pending,resolved"/>
+					<!-- solo el grupo manager puede asignar el ticket -->
+					<button string="Assigng to me" name="get_assigned" type="object" states="new" groups="helpdesk_laura.res_groups_helpdesk_manager"/>
 				</header>
 				<sheet>
 				<!--TITULO DE LA PAGINA-->

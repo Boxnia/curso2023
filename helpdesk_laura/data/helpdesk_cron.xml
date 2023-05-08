@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<record id="ir_cron_delete_tags" model="ir.cron">
+        <field name="name">HelpDesk: Delete tags not assigned to any ticket</field>
+        <field name="model_id" ref="model_helpdesk_ticket_tag"/>
+        <field name="code">model._delete_tags_not_assigned()</field>
+        <field name="state">code</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="nextcall" eval="(DateTime.now().replace(hour=2, minute=0) + timedelta(days=1)).strftime('%Y-%m-%d %H:%M:%S')" />
+        <field name="numbercall">-1</field>     
+        <field name="active">False</field>
+    </record>    
+</odoo>

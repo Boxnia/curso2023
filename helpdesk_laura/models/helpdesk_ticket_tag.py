@@ -1,4 +1,4 @@
-from odoo import  fields, models
+from odoo import  fields, models, api
 
 class HelpdeskTicketTag(models.Model):
     _name = 'helpdesk.ticket.tag'
@@ -18,4 +18,8 @@ class HelpdeskTicketTag(models.Model):
         "ticket_id",
         "Tickets"
     )
+    
+    @api.model
+    def _delete_tags_not_assigned(self):
+        self.search([('tickets_ids', '=', False)]).unlink()
             

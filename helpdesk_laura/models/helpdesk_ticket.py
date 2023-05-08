@@ -22,8 +22,16 @@ class HelpdeskTicket(models.Model):
         """,
     )
     # Fecha
-    date = fields.Date()
-    
+    #añadir un default para que la fecha del ticket sea la fecha de hoy
+    #es api model porque no es un recordset
+    @api.model
+    def _get_default_date(self):
+        return fields.Date.today()
+   
+    date = fields.Date(
+        default=_get_default_date,
+    )
+   
     # añadir un onchange para que al indicar la fecha ponga como fehca de vencimiento un dia más
     @api.onchange("date")
     def _onchange_date(self):
@@ -214,13 +222,28 @@ class HelpdeskTicket(models.Model):
             record.tickets_count = len(tickets)
     
     tag_name = fields.Char()
-    
+    # Modificar el botón de crear una etiqueta en el formulario de ticket para que abra una acción nueva, pasando por contexto el valor del nombre y la relación con el ticket.
+
     #comman es igual que poner lo de las tuplas
     def create_tag(self):
         self.ensure_one()
         # self.write({'tag_ids': [(0,0,{'name': self.tag_name})]})
         # self.write({'tag_ids': [Command.create({'name': self.tag_name})]})
-        self.tag_ids = [Command.create({'name': self.tag_name})]
+        # self.tag_ids = [Command.create({'name': self.tag_name})]
+        action = {
+            'name': 'Create Tag',
+            'type': 'ir.actions.act_window',
+            'res_model': 'helpdesk.ticket.tag',
+        }
+        #action = self.env["ir.actions.actions"]._for_xml_id("helpdesk_laura.helpdesk_ticket_tag_action")
+        action['contect'] = {'default_name': self.tag_name, 'default_ticket_id': self.id}
+        #open new window
+        #targe abre en un pop up nuevo
+        action['target'] = 'new'
+        action['binding_wiew_types'] = 'form'
+        action['view_mode'] = 'form'
+        return action
+        
     #import pdb; pdb.set_trace()   
     def clear_tag(self):
         self.ensure_one()
@@ -241,29 +264,9 @@ class HelpdeskTicket(models.Model):
         action['context'] = {'default_ticket_id': self.id}
         return action
         
+    
+    def get_assigned(self):
+        self.ensure_one()
+        self.state = 'assigned' 
+        self.user_id = self.env.user.id
         
-          
-    """       def _get_action_view_picking(self, pickings):
-        '''
-        This function returns an action that display existing delivery orders
-        of given sales order ids. It can either be a in a list or in a form
-        view, if there is only one delivery order to show.
-        '''
-
-        if len(pickings) > 1:
-            action['domain'] = [('id', 'in', pickings.ids)]
-        elif pickings:
-            form_view = [(self.env.ref('stock.view_picking_form').id, 'form')]
-            if 'views' in action:
-                action['views'] = form_view + [(state,view) for state,view in action['views'] if view != 'form']
-            else:
-                action['views'] = form_view
-            action['res_id'] = pickings.id
-        # Prepare the context.
-        picking_id = pickings.filtered(lambda l: l.picking_type_id.code == 'outgoing')
-        if picking_id:
-            picking_id = picking_id[0]
-        else:
-            picking_id = pickings[0]
-        action['context'] = dict(self._context, default_partner_id=self.partner_id.id, default_picking_type_id=picking_id.picking_type_id.id, default_origin=self.name, default_group_id=picking_id.group_id.id)
-        return action """

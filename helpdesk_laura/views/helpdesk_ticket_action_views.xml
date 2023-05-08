@@ -88,5 +88,13 @@
 			</p>
 		</field>
     </record>
+	  <record id="helpdesk_ticket_action_related_action" model="ir.actions.act_window">
+        <field name="name">HelpDesk Tickets Actions</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">helpdesk.ticket.action</field>
+        <field name="view_mode">tree,form</field>
+		<field name="domain">[('ticket_id','=',active_id)]</field>
+		<field name="context">{'default_ticket_id':active_id}</field>
+    </record>
     <menuitem id="helpdesk_ticket_action_menu" name="Actions" sequence="20" parent="helpdesk_menu" action="helpdesk_ticket_action_action"/>
 </odoo>

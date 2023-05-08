@@ -186,8 +186,13 @@
 					</page>
 					<page string="Actions" name='actions'>
 					<button string="Set all as done" name="set_action_as_done" type="object" />
+					<button string="Open related actions (type=action)" name="%(helpdesk_laura.helpdesk_ticket_action_related_action)d" type="action" />
+					<button string="Open related actions (type=object)" name="get_related_action" type="object"/>
+
 					<field name="action_ids" context="{'default_state':'done','tree_view_ref':'helpdesk_laura.view_helpdesk_ticket_action_tree_simple','form_view_ref':'helpdesk_laura.view_helpdesk_ticket_action_form_simple'}" />
 					
+
+
 					<!-- <field name="action_ids">
 						<tree string="Actions">
 							<field name="name"/>

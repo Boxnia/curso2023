@@ -1,5 +1,6 @@
-from odoo import fields, models, api, Command
-from odoo.exceptions import UserError
+from odoo import fields, models, api, Command, _
+from odoo.exceptions import UserError, ValidationError
+from datetime import timedelta
 
 class HelpdeskTicket(models.Model):
     _name = "helpdesk.ticket"
@@ -22,8 +23,30 @@ class HelpdeskTicket(models.Model):
     )
     # Fecha
     date = fields.Date()
+    
+    # añadir un onchange para que al indicar la fecha ponga como fehca de vencimiento un dia más
+    @api.onchange("date")
+    def _onchange_date(self):
+        if self.date:
+            self.date_limit = self.date + timedelta(days=1)
+    
     # Fecha y hora limite
-    date_limit = fields.Datetime(string="Limit Date & Time")
+    date_limit = fields.Datetime(
+            string="Limit Date & Time",
+            #compute = "_compute_date_limit",
+            #inverse = "_inverse_date_limit",
+            #store = True
+        )
+
+    """  def _compute_date_limit(self):
+        for record in self:
+            if self.date:
+                self.date_limit = self.date + timedelta(days=1)
+            else:
+                self.date_limit = False
+    
+    def _inverse_date_limit(self):
+        pass """
     # Asignado (Verdadero o Falso) solo lectura
     assigned = fields.Boolean(
         readonly=True,
@@ -90,6 +113,16 @@ class HelpdeskTicket(models.Model):
 
     color = fields.Integer("Color Index", default=0)
     amount_time = fields.Float(string="Amount of time")
+    
+    #añadir una restricción para hace que el campo amount_time no sea menor que 0
+    @api.constrains("amount_time")
+    def _check_amount_time(self):
+        for record in self:
+            if record.amount_time < 0:
+                    raise ValidationError(_("The PIN must be a sequence of digits." ))
+    
+        
+        
     person_id = fields.Many2one(
         "res.partner", domain=[("is_company", "=", False)], string="Person"
     )
@@ -199,3 +232,38 @@ class HelpdeskTicket(models.Model):
             Command.clear(),
             Command.set(tag_ids.ids)]
     
+    def get_related_action(self):
+        self.ensure_one()
+        #devolver la accion que abre la ventana con un dominio para mostrar solo los que son mios
+        #buscar accion y devolverla
+        action = self.env["ir.actions.actions"]._for_xml_id("helpdesk_laura.helpdesk_ticket_action_action")
+        action['domain'] = [('ticket_id', '=', self.id)]
+        action['context'] = {'default_ticket_id': self.id}
+        return action
+        
+        
+          
+    """       def _get_action_view_picking(self, pickings):
+        '''
+        This function returns an action that display existing delivery orders
+        of given sales order ids. It can either be a in a list or in a form
+        view, if there is only one delivery order to show.
+        '''
+
+        if len(pickings) > 1:
+            action['domain'] = [('id', 'in', pickings.ids)]
+        elif pickings:
+            form_view = [(self.env.ref('stock.view_picking_form').id, 'form')]
+            if 'views' in action:
+                action['views'] = form_view + [(state,view) for state,view in action['views'] if view != 'form']
+            else:
+                action['views'] = form_view
+            action['res_id'] = pickings.id
+        # Prepare the context.
+        picking_id = pickings.filtered(lambda l: l.picking_type_id.code == 'outgoing')
+        if picking_id:
+            picking_id = picking_id[0]
+        else:
+            picking_id = pickings[0]
+        action['context'] = dict(self._context, default_partner_id=self.partner_id.id, default_picking_type_id=picking_id.picking_type_id.id, default_origin=self.name, default_group_id=picking_id.group_id.id)
+        return action """

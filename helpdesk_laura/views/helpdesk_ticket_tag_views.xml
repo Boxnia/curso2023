@@ -15,6 +15,7 @@
 		<field name= "arch" type='xml' >
 			<form string="Tickets Tags">
 				<sheet>
+					<button name="%(helpdesk_laura.helpdesk_create_ticket_action)d" string="Create Ticket" type="action" class="oe_highlight"/>
 					<group>
 						<field name="name"/>
 						<field name="tickets_ids"/>

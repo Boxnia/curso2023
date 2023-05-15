@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="report_helpdesk_ticket">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <div class="oe_structure"/>
+
+                        <h2 class="mt-4">
+                            Ticket # <span t-field="doc.name"/>
+                        </h2>
+                        <table class="table table-sm o_main_table table-borderless mt-4">
+                            <thead style="display: table-row-group">
+                                <tr>
+                                    <th name="th_description" class="text-start">Action</th>
+                                    <th name="th_quantity" class="text-start">State</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <t t-foreach="doc.action_ids" t-as="action">
+                                    <tr>
+                                        <td name="td_name"><span t-field="action.name"/></td>
+                                        <td name="td_state"><span t-field="action.state"/></td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <template id="report_helpdesk_ticket_list">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <div class="oe_structure"/>
+
+                    <h2 class="mt-4">
+                        Ticket List
+                    </h2>
+                    <p>
+                        <t t-debug="pdb"></t>
+                    </p>
+                    <table class="table table-sm o_main_table table-borderless mt-4">
+                        <thead style="display: table-row-group">
+                            <tr>
+                                <th name="th_description" class="text-start">Ticket</th>
+                                <th name="th_quantity" class="text-start">Assigned</th>
+                                <th name="th_quantity" class="text-start">Date</th>
+                                <th name="th_quantity" class="text-start">State</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="docs" t-as="ticket">
+                                <tr>
+                                    <td name="td_name"><span t-field="ticket.name"/></td>
+                                    <td name="td_state"><span t-field="ticket.user_id"/></td>
+                                    <td name="td_name"><span t-field="ticket.date"/></td>
+                                    <td name="td_state"><span t-field="ticket.state"/></td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </template>
+    <template id="user_card_report">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.basic_layout">
+                    <div class="page">
+                        <div class="oe_structure"/>
+
+                        <h2 class="mt-4">
+                            User # <span t-field="doc.name"/>
+                        </h2>
+                            <img t-if="doc.image_1920" t-att-src="image_data_uri(doc.image_1920)" style="max-width: 100%;"/>                    
+                        </div>
+                </t>c
+            </t>
+        </t>
+    </template>
+</odoo>

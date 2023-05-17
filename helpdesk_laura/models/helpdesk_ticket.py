@@ -5,7 +5,7 @@ from datetime import timedelta
 class HelpdeskTicket(models.Model):
     _name = "helpdesk.ticket"
     _description = "Helpdesk Ticket"
-
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     # Nombre
     name = fields.Char(
         required=True,
@@ -185,8 +185,9 @@ class HelpdeskTicket(models.Model):
         #cuando digo no asignado es cuando es igual a false
         if operator not in ("=", "!=") or not isinstance(value, bool):
             raise UserError("Operador no permitido")
-        if operator == "=" and value == True:
-            operator = "!="
+        if value == True:
+            if operator == "=":
+                operator = "!="
         else:
             operator  = "="
         return [("user_id", operator, False)]
@@ -270,3 +271,10 @@ class HelpdeskTicket(models.Model):
         self.state = 'assigned' 
         self.user_id = self.env.user.id
         
+    #34 Uso de context
+
+    #Añadir un campo contacto en el ticket, hacer que si creo un contacto desde el ticket se cree como tipo individual y el comercial sea el usuario asignado al ticket.
+    partner_id= fields.Many2one(
+        "res.partner",
+        string="Partner",
+    )
